@@ -1,8 +1,8 @@
-# Live Markdown Editor
+# Live Preview Markdown Editor
 
-### [**TRY IT HERE**](http://heiswayi.github.io/markdown-editor)
+[**Try it here!**](http://heiswayi.github.io/markdown-editor)
 
------
+## Features
 
 Basic useful feature list:
 
@@ -20,17 +20,13 @@ For advanced, you may check on [GitHub Flavored Markdown](https://help.github.co
 
 This Markdown Editor was forked from [here](https://github.com/jbt/markdown-editor) and relicensed under [MIT license](LICENSE.md).
 
------
-
-### To-do list
+## To-do List
 
 * Autolink
 * Implement the missing features; single linebreak, task list.
 * Code cleanup
 
------
-
-### Stuffs used to realize this Markdown Editor
+## Credits
 
 * [markdown-it](https://github.com/markdown-it/markdown-it) for Markdown parsing
 * [CodeMirror](http://codemirror.net/) for the awesome syntax-highlighted editor
@@ -38,6 +34,6 @@ This Markdown Editor was forked from [here](https://github.com/jbt/markdown-edit
 * [js-deflate](https://github.com/dankogai/js-deflate) for gzipping of data to make it fit in URLs
 * [github-markdown.css](https://github.com/sindresorhus/github-markdown-css) for GitHub-flavored markdown CSS.
  
------
+## License
  
-Built with :heart: by [Heiswayi Nrird](http://heiswayi.github.io/about)
+MIT License
