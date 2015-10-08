@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Markdown Editor</title>
+  <title>Live Preview Markdown Editor</title>
   <script src="markdown-it.js"></script>
   <script src="markdown-it-footnote.js"></script>
   <script src="highlight.pack.js"></script>
@@ -156,7 +156,7 @@
   </style>
 </head>
 <body>
-  <div id="in"><form><textarea id="code"># Basic Markdown Editor
+  <div id="in"><form><textarea id="code"># Live Preview Markdown Editor
 
 Basic useful feature list:
 
@@ -172,39 +172,31 @@ For advanced, you may check on [GitHub Flavored Markdown](https://help.github.co
 
 > Please note that, this markdown editor doesn't _yet cover_ for **single linebreak** and **task list** markdown as specified in [this GitHub's article](https://help.github.com/articles/writing-on-github/).
 
-This Markdown Editor was forked from [here](https://github.com/jbt/markdown-editor) and relicensed under [MIT license](LICENSE.md).
+This Markdown Editor was forked from [here](https://github.com/jbt/markdown-editor).
 
-### Extras
+## Extras
 
-#### Equation
-
-<img src="http://www.sciweavers.org/tex2img.php?eq=E%3Dmc%5E2&bc=White&fc=Black&im=png&fs=12&ff=arev&edit=0" align="center" border="0" alt="E=mc^2" width="69" height="18" />
-
-Inline <img src="http://www.sciweavers.org/tex2img.php?eq=E%3Dmc%5E2&bc=White&fc=Black&im=png&fs=12&ff=arev&edit=0" align="center" border="0" alt="E=mc^2" width="69" height="18" /> Inline,Inline <img src="http://www.sciweavers.org/tex2img.php?eq=E%3Dmc%5E2&bc=White&fc=Black&im=png&fs=12&ff=arev&edit=0" align="center" border="0" alt="E=mc^2" width="69" height="18" /> Inline?
-
-<img src="http://www.sciweavers.org/tex2img.php?eq=%5C%28%5Csqrt%7B3x-1%7D%2B%281%2Bx%29%5E2%5C%29&bc=White&fc=Black&im=png&fs=12&ff=arev&edit=0" align="center" border="0" alt="\(\sqrt{3x-1}+(1+x)^2\)" width="156" height="26" />
-
-<img src="http://www.sciweavers.org/tex2img.php?eq=%5Csin%28%5Calpha%29%5E%7B%5Ctheta%7D%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%28x%5Ei%20%2B%20%5Ccos%28f%29%29&bc=White&fc=Black&im=png&fs=12&ff=arev&edit=0" align="center" border="0" alt="\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))" width="208" height="50" />
-
-Equation can be generated from http://www.sciweavers.org/free-online-latex-equation-editor
-
-#### Emoji
+#### Use of Emoji
 
 :+1: :stuck_out_tongue_winking_eye: :heart: :smile_cat:
 
 Check [Emoji Cheat Sheet](http://www.emoji-cheat-sheet.com/) for more emoji emoticons.
 
-### Stuffs used to realize this Markdown Editor
+## Credits
 
  * [markdown-it](https://github.com/markdown-it/markdown-it) for Markdown parsing
  * [CodeMirror](http://codemirror.net/) for the awesome syntax-highlighted editor
  * [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) for syntax highlighting in output code blocks
  * [js-deflate](https://github.com/dankogai/js-deflate) for gzipping of data to make it fit in URLs
  * [github-markdown.css](https://github.com/sindresorhus/github-markdown-css) for GitHub-flavored markdown CSS.
- 
------
- 
-Built with :heart: by [Heiswayi Nrird](http://heiswayi.github.io/about)
+
+## License
+
+[MIT License](LICENSE.md)
+
+---
+
+Built with :heart: by [Heiswayi Nrird](http://heiswayi.github.io)
 </textarea></form></div>
   <div id="out" class="markdown-body"></div>
   <div id="menu">
@@ -430,6 +422,6 @@ Built with :heart: by [Heiswayi Nrird](http://heiswayi.github.io/about)
       editor.focus();
     }
   </script>
-  
+
 </body>
 </html>
