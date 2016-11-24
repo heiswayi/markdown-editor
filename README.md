@@ -1,6 +1,6 @@
 # Live Preview Markdown Editor
 
-[**Try it here!**](http://heiswayi.github.io/markdown-editor)
+[**TRY IT HERE!**](http://heiswayi.github.io/markdown-editor)
 
 ## Features
 
@@ -22,9 +22,9 @@ This Markdown Editor was forked from [here](https://github.com/jbt/markdown-edit
 
 ## To-do List
 
-* Autolink
-* Implement the missing features; single linebreak, task list.
-* Code cleanup
+- [ ] Autolink
+- [ ] Implement the missing features; single linebreak, task list.
+- [ ] Code cleanup
 
 ## Credits
 
