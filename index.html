@@ -1,427 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Live Preview Markdown Editor</title>
-  <script src="markdown-it.js"></script>
-  <script src="markdown-it-footnote.js"></script>
-  <script src="highlight.pack.js"></script>
-  <script src="emojify.js"></script>
-  <script src="codemirror/lib/codemirror.js"></script>
-  <script src="codemirror/overlay.js"></script>
-  <script src="codemirror/xml/xml.js"></script>
-  <script src="codemirror/markdown/markdown.js"></script>
-  <script src="codemirror/gfm/gfm.js"></script>
-  <script src="codemirror/javascript/javascript.js"></script>
-  <script src="codemirror/css/css.js"></script>
-  <script src="codemirror/htmlmixed/htmlmixed.js"></script>
-  <script src="codemirror/lib/util/continuelist.js"></script>
-  <script src="rawinflate.js"></script>
-  <script src="rawdeflate.js"></script>
-  <link rel="stylesheet" href="base16-light.css">
-  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
-  <link rel="stylesheet" href="default.css">
-  <link rel="stylesheet" href="github-markdown.css">
-  <style>
-    body {margin: 0;}
+    <title>Markdown-HTML Live Preview Editor</title>
 
-    .CodeMirror pre{
-      line-height: 16px;
-    }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    #in{
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 50%;
-      height: auto;
-      overflow: auto;
-      font-size: 12px;
-      box-shadow: -10px 2px 6px 10px rgba(0,0,0,0.4);
-      border-right: 1px dashed #bbb;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+    <link rel="stylesheet" href="css/github-markdown.css">
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            height: 100%;
+        }
 
-    .CodeMirror {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: auto;
-      height: auto;
-    }
+        body {
+            background-color: #F6F6F6;
+            overflow: hidden;
+            font-size: 16px;
+        }
 
-    .CodeMirror-scroll {
-      padding: 30px;
-      box-sizing: border-box;
-    }
+        .container {
+            padding: 8px;
+            display: block;
+            height: calc(100% - 40px);
+        }
 
-    #out{
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 50%;
-      bottom: 0;
-      overflow: auto;
-      padding: 10px;
-      padding-left: 20px;
-    }
+        .split {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
 
-    #menu {
-      display: none;
-      position: fixed;
-      background-color: #111;
-      border-radius: 5px;
-      top: 50%;
-      left: 50%;
-      width: 250px;
-      height: 150px;
-      margin-top: -75px;
-      margin-left: -125px;
-      z-index: 99;
-      text-align: center;
-      color: white;
-    }
+        .content {
+            border: 1px solid #C0C0C0;
+            box-shadow: inset 0 1px 2px #e4e4e4;
+            background-color: #fff;
+        }
 
-    #menu > span {
-      display: block;
-      font-size: 1.5em;
-      line-height: 1.3;
-      margin-top: 0.25em;
-    }
+        .gutter {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: 50%;
+        }
 
-    #menu > div {
-      display: inline-block;
-      width: 100px;
-      text-align: center;
-      vertical-align: top;
-      cursor: pointer;
-      opacity: 0.7;
-    }
+        .gutter.gutter-vertical {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=')
+        }
 
-    #menu > div:hover {
-      opacity: 1;
-    }
+        .gutter.gutter-horizontal {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+        }
 
-    #menu svg {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto;
-      display: block;
-    }
-    #menu path {
-      fill: #fff;
-    }
+        .gutter.gutter-horizontal:hover {
+            cursor: col-resize;
+        }
 
-    #close-menu {
-      position: absolute;
-      top: 5px;
-      right: 9px;
-      color: white;
-      cursor: pointer;
-    }
+        .split.split-horizontal,
+        .gutter.gutter-horizontal {
+            height: 100%;
+            float: left;
+        }
 
-    .emoji {
-      width: 1em;
-      height: 1em;
-      vertical-align: baseline;
-    }
+        textarea {
+            width: 100%;
+            height: 100%;
+            resize: none;
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-family: monospace;
+            background: #FFFDE7;
+        }
 
-    @media screen and (max-width: 1024px) {
-      #in {
-        display: none;
-      }
-      #out {
-        left: 0;
-        padding-left: 10px;
-      }
-    }
+        #a {
+            overflow-y: hidden;
+        }
 
-    .cm-header-1 { font-size: 2em; }
-    .cm-header-2 { font-size: 1.75em; }
-    .cm-header-3 { font-size: 1.5em; }
-    .cm-header-4 { font-size: 1.3em; }
-    .cm-header-5 { font-size: 1.2em; }
-    .cm-header-6 { font-size: 1.15em; }
-
-    .cm-quote { color: #90a959; font-style: italic; }
-
-    .view #in {
-      display: none;
-    }
-    .view #out {
-      left: 0;
-      padding-left: 10px;
-    }
-  </style>
+        #b {
+            overflow: hidden;
+        }
+        #htmlOutput {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .navbar {
+            display: block;
+            padding: 8px 8px 0px 8px;
+        }
+        .title {
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
-  <div id="in"><form><textarea id="code"># Live Preview Markdown Editor
-
-Basic useful feature list:
-
- * `Ctrl+S` / `Cmd+S` to save the file (untitled.md)
- * `Ctrl+Shift+S` / `Cmd+Shift+S` to choose to save as Markdown or HTML file
- * Drag and drop a file into here to load it
- * File contents are saved in the URL so you can share the file
- * It was based on the GitHub-flavored markdown
-
-You may refer to GitHub's [Markdown Basics](https://help.github.com/articles/markdown-basics/) for some basic writing references.
-
-For advanced, you may check on [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/).
-
-> Please note that, this markdown editor doesn't _yet cover_ for **single linebreak** and **task list** markdown as specified in [this GitHub's article](https://help.github.com/articles/writing-on-github/).
-
-This Markdown Editor was forked from [here](https://github.com/jbt/markdown-editor).
-
-## Extras
-
-#### Use of Emoji
-
-:+1: :stuck_out_tongue_winking_eye: :heart: :smile_cat:
-
-Check [Emoji Cheat Sheet](http://www.emoji-cheat-sheet.com/) for more emoji emoticons.
-
-## Credits
-
- * [markdown-it](https://github.com/markdown-it/markdown-it) for Markdown parsing
- * [CodeMirror](http://codemirror.net/) for the awesome syntax-highlighted editor
- * [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) for syntax highlighting in output code blocks
- * [js-deflate](https://github.com/dankogai/js-deflate) for gzipping of data to make it fit in URLs
- * [github-markdown.css](https://github.com/sindresorhus/github-markdown-css) for GitHub-flavored markdown CSS.
-
-## License
-
-[MIT License](LICENSE.md)
-
----
-
-Built with :heart: by [Heiswayi Nrird](http://heiswayi.github.io)
-</textarea></form></div>
-  <div id="out" class="markdown-body"></div>
-  <div id="menu">
-    <span>Save As</span>
-    <div id="saveas-markdown">
-      <svg height="64" width="64" xmlns="http://www.w3.org/2000/svg">
-        <g transform="scale(0.0625)">
-          <path d="M950.154 192H73.846C33.127 192 0 225.12699999999995 0 265.846v492.308C0 798.875 33.127 832 73.846 832h876.308c40.721 0 73.846-33.125 73.846-73.846V265.846C1024 225.12699999999995 990.875 192 950.154 192zM576 703.875L448 704V512l-96 123.077L256 512v192H128V320h128l96 128 96-128 128-0.125V703.875zM767.091 735.875L608 512h96V320h128v192h96L767.091 735.875z" />
-        </g>
-      </svg>
-
-      <span>Markdown</span>
+    <div class="navbar">
+      <span class="title">Markdown-HTML Live Preview Editor</span> &middot; <a href="#" onclick="saveMD()">Save As Markdown</a> &middot; <a href="#" onclick="saveHTML()">Save As HTML</a>
     </div>
-    <div id="saveas-html">
-      <svg height="64" width="64" xmlns="http://www.w3.org/2000/svg">
-        <g transform="scale(0.0625) translate(64,0)">
-          <path d="M608 192l-96 96 224 224L512 736l96 96 288-320L608 192zM288 192L0 512l288 320 96-96L160 512l224-224L288 192z" />
-        </g>
-      </svg>
-
-      <span>HTML</span>
+    <div class="container">
+    <div id="a" class="split split-horizontal content">
+        <textarea id="md" onkeyup="parseMD()" onpaste="parseMD()"></textarea>
     </div>
-    <a id="close-menu">&times;</a>
-  </div>
-  <script type="text/javascript">
-    var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-    navigator.saveBlob = navigator.saveBlob || navigator.msSaveBlob || navigator.mozSaveBlob || navigator.webkitSaveBlob;
-    window.saveAs = window.saveAs || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs;
+    <div id="b" class="split split-horizontal content">
+        <div id="htmlOutput"></div>
+    </div>
+    </div>
+    <script src="js/split.js"></script>
+    <script src="js/remarkable.js"></script>
+    <script src="js/FileSaver.min.js"></script>
+    <script>
+        Split(['#a', '#b'], {
+            gutterSize: 8,
+            cursor: 'col-resize'
+        });
 
-    // Because highlight.js is a bit awkward at times
-    var languageOverrides = {
-      js: 'javascript',
-      html: 'xml'
-    };
+        var md = new Remarkable('full', {
+          html:         false,        // Enable HTML tags in source
+          xhtmlOut:     false,        // Use '/' to close single tags (<br />)
+          breaks:       false,        // Convert '\n' in paragraphs into <br>
+          langPrefix:   'language-',  // CSS language prefix for fenced blocks
+          linkify:      true,         // autoconvert URL-like texts to links
+          linkTarget:   '',           // set target to open link in
 
-    emojify.setConfig({ img_dir: 'emoji' });
+          // Enable some language-neutral replacements + quotes beautification
+          typographer:  false,
 
-    var md = markdownit({
-      html: true,
-      highlight: function(code, lang){
-        if(languageOverrides[lang]) lang = languageOverrides[lang];
-        if(lang && hljs.getLanguage(lang)){
-          try {
-            return hljs.highlight(lang, code).value;
-          }catch(e){}
+          // Double + single quotes replacement pairs, when typographer enabled,
+          // and smartquotes on. Set doubles to '«»' for Russian, '„“' for German.
+          quotes: '“”‘’',
+        });
+
+        function parseMD() {
+            document.getElementById('htmlOutput').className = 'preview markdown-body';
+            document.getElementById('htmlOutput').innerHTML = md.render(document.getElementById('md').value);
         }
-        return '';
-      }
-    })
-      .use(markdownitFootnote);
 
-
-    var hashto;
-
-    function update(e){
-      setOutput(e.getValue());
-
-      clearTimeout(hashto);
-      hashto = setTimeout(updateHash, 1000);
-    }
-
-    function setOutput(val){
-      val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function(a, b){
-        return '<img src="http://latex.codecogs.com/png.latex?' + encodeURIComponent(b) + '" />';
-      });
-
-      var out = document.getElementById('out');
-      var old = out.cloneNode(true);
-      out.innerHTML = md.render(val);
-      emojify.run(out);
-
-      var allold = old.getElementsByTagName("*");
-      if (allold === undefined) return;
-
-      var allnew = out.getElementsByTagName("*");
-      if (allnew === undefined) return;
-
-      for (var i = 0, max = Math.min(allold.length, allnew.length); i < max; i++) {
-        if (!allold[i].isEqualNode(allnew[i])) {
-          out.scrollTop = allnew[i].offsetTop;
-          return;
+        function saveMD() {
+            var content = document.getElementById('md').value;
+            var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, 'document.md');
+            return false;
         }
-      }
-    }
 
-    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-      mode: 'gfm',
-      lineNumbers: false,
-      matchBrackets: true,
-      lineWrapping: true,
-      theme: 'base16-light',
-      extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
-    });
-
-    editor.on('change', update);
-
-
-
-
-
-    document.addEventListener('drop', function(e){
-      e.preventDefault();
-      e.stopPropagation();
-
-      var reader = new FileReader();
-      reader.onload = function(e){
-        editor.setValue(e.target.result);
-      };
-
-      reader.readAsText(e.dataTransfer.files[0]);
-    }, false);
-
-
-
-
-
-    function saveAsMarkdown(){
-      save(editor.getValue(), "untitled.md");
-    }
-
-    function saveAsHtml() {
-      save(document.getElementById('out').innerHTML, "untitled.html");
-    }
-
-    document.getElementById('saveas-markdown').addEventListener('click', function() {
-      saveAsMarkdown();
-      hideMenu();
-    });
-
-    document.getElementById('saveas-html').addEventListener('click', function() {
-      saveAsHtml();
-      hideMenu();
-    });
-
-    function save(code, name){
-      var blob = new Blob([code], { type: 'text/plain' });
-      if(window.saveAs){
-        window.saveAs(blob, name);
-      }else if(navigator.saveBlob){
-        navigator.saveBlob(blob, name);
-      }else{
-        url = URL.createObjectURL(blob);
-        var link = document.createElement("a");
-        link.setAttribute("href",url);
-        link.setAttribute("download",name);
-        var event = document.createEvent('MouseEvents');
-        event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-        link.dispatchEvent(event);
-      }
-    }
-
-
-
-    var menuVisible = false;
-    var menu = document.getElementById('menu');
-
-    function showMenu() {
-      menuVisible = true;
-      menu.style.display = 'block';
-    }
-
-    function hideMenu() {
-      menuVisible = false;
-      menu.style.display = 'none';
-    }
-
-    document.getElementById('close-menu').addEventListener('click', function(){
-      hideMenu();
-    });
-
-
-
-
-    document.addEventListener('keydown', function(e){
-      if(e.keyCode == 83 && (e.ctrlKey || e.metaKey)){
-        e.shiftKey ? showMenu() : saveAsMarkdown();
-
-        e.preventDefault();
-        return false;
-      }
-
-      if(e.keyCode === 27 && menuVisible){
-        hideMenu();
-
-        e.preventDefault();
-        return false;
-      }
-    });
-
-
-
-
-    function updateHash(){
-      window.location.hash = btoa( // base64 so url-safe
-        RawDeflate.deflate( // gzip
-          unescape(encodeURIComponent( // convert to utf8
-            editor.getValue()
-          ))
-        )
-      );
-    }
-
-    if(window.location.hash){
-      var h = window.location.hash.replace(/^#/, '');
-      if(h.slice(0,5) == 'view:'){
-        setOutput(decodeURIComponent(escape(RawDeflate.inflate(atob(h.slice(5))))));
-        document.body.className = 'view';
-      }else{
-        editor.setValue(
-          decodeURIComponent(escape(
-            RawDeflate.inflate(
-              atob(
-                h
-              )
-            )
-          ))
-        );
-        update(editor);
-        editor.focus();
-      }
-    }else{
-      update(editor);
-      editor.focus();
-    }
-  </script>
-
+        function saveHTML() {
+            var content = document.getElementById('htmlOutput').innerHTML
+            var blob = new Blob([content], {type: "text/html;charset=utf-8"});
+            saveAs(blob, 'document.html');
+            return false;
+        }
+    </script>
 </body>
 </html>
